@@ -7,7 +7,12 @@ class LoginApp:
         self.loginDetails = loginDetails
         self.win = Tk()
         self.win.title("Employee Login")
-        self.win.geometry("250x100")
+        # Q2 
+        self.win_width = 250
+        self.win_height = 100
+        self.x = (self.win.winfo_screenwidth() - self.win_width) // 2
+        self.y = (self.win.winfo_screenheight() - self.win_height) // 2
+        self.win.geometry(f"{self.win_width}x{self.win_height}+{self.x}+{self.y}")
 
         self.mainFrame = Frame(self.win)
         self.mainFrame.grid(column=0, row=0)
