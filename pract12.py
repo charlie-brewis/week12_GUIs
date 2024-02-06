@@ -51,7 +51,9 @@ class LoginApp:
         entryPassword = Entry(
             self.mainFrame,
             width=25,
-            textvariable=self.password
+            textvariable=self.password,
+            # Q1
+            show='*'
         )
         entryPassword.grid(column=1, row=2)
 
@@ -90,3 +92,5 @@ def main():
     }
     app = LoginApp(companyLoginDetails)
     app.run()
+
+main()
