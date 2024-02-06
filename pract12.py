@@ -82,10 +82,19 @@ class LoginApp:
 
         if username not in self.loginDetails:
             self.message.set("Username not found.")
+            # Q3: switch mainframe 
+            self.win.configure(background="red")
+            self.mainFrame.configure(background="red")
         elif self.loginDetails[username] != password:
             self.message.set("Incorrect password.")
+            self.win.configure(background="yellow")
+            self.mainFrame.configure(background="yellow")
+
         else:
             self.message.set("Login successful!")
+            self.win.configure(background="green")
+            self.mainFrame.configure(background="green")
+
 
 
 def main():
