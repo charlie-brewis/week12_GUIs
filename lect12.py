@@ -6,7 +6,7 @@ class Calculator:
     def __init__(self):
         self.win = Tk()
         self.win.title("Calculator")
-        self.win.geometry("200x150")
+        self.win.geometry("200x200")
 
         self.mainFrame = Frame(self.win)
         self.mainFrame.pack(padx=10, pady=10)
@@ -15,6 +15,11 @@ class Calculator:
         self.num2 = IntVar()
         self.result = StringVar()
         self.result.set("Result: 0")
+
+        # Q4
+        self.possible_operations = ["Add", "Sub", "Mul", "Div"]
+        self.selected_operation = StringVar()
+        self.selected_operation.set(self.possible_operations[0])
 
     def run(self):
         self.createWidgets()
@@ -47,10 +52,18 @@ class Calculator:
         )
         lblResult.pack()
 
+        # Q4
+        operationListbox = OptionMenu(
+            self.mainFrame,
+            self.selected_operation,
+            *self.possible_operations
+        )
+        operationListbox.pack()
+
         btnMultiply = Button(
             self.mainFrame,
-            text="Multiply",
-            command=self.multiply
+            text="Calc",
+            command=self.perform_operation
         )
         btnMultiply.pack(side="left")
 
@@ -61,14 +74,44 @@ class Calculator:
         )
         btnClose.pack(side="right")
 
-    def multiply(self):
-        num1 = self.num1.get()
-        num2 = self.num2.get()
+    # Q4
+    def perform_operation(self):
+        match self.selected_operation.get():
+            case "Add":
+                self.add()
+            case "Sub":
+                self.subtract()
+            case "Mul":
+                self.multiply()
+            case "Div":
+                self.divide()
+        
+    def get_inputs(self):
+        return self.num1.get(), self.num2.get()
+    
+    def add(self):
+        num1, num2 = self.get_inputs()
+        result = num1 + num2
+        self.result.set(f"Result: {result}")
 
+    def subtract(self):
+        num1, num2 = self.get_inputs()
+        result = num1 - num2
+        self.result.set(f"Result: {result}")
+
+    def multiply(self):
+        num1, num2 = self.get_inputs()
         result = num1 * num2
+        self.result.set(f"Result: {result}")
+
+    def divide(self):
+        num1, num2 = self.get_inputs()
+        result = num1 / num2
         self.result.set(f"Result: {result}")
 
 
 def main():
     calc = Calculator()
     calc.run()
+
+main()
