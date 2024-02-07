@@ -82,7 +82,7 @@ class LoginApp:
 
         if username not in self.loginDetails:
             self.message.set("Username not found.")
-            #! Q3 not sure how to cleanly do whole backgroun - seems label is in the way 
+            #! Q3 not sure how to cleanly do whole background - seems label is in the way 
             self.win.configure(background="red")
             self.mainFrame.configure(background="red")
         elif self.loginDetails[username] != password:
