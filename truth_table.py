@@ -7,7 +7,6 @@ class Truth_table_1d:
         self.mainframe = Frame(self.win)
         self.mainframe.pack()
         self.result = StringVar()
-        
         self.condition1_ans = BooleanVar()
         self.condition2_ans = BooleanVar()
         self.condition3_ans = BooleanVar()
@@ -56,7 +55,6 @@ class Truth_table_1d:
             self.result.set("Congratulations! You got it right!")
         else:
             self.result.set("This is incorrect.")
-            
 
     def mainloop(self):
         self.win.mainloop()
@@ -73,7 +71,6 @@ class Truth_table_2d:
         self.mainframe = Frame(self.win)
         self.mainframe.pack()
         self.result = StringVar()
-    
         '''
         condition 1: 0 OR 0
         condition 2: 0 OR 1
@@ -135,8 +132,7 @@ class Truth_table_2d:
         if all(conditions):
             self.result.set("Congratulations! You got it right!")
         else:
-            self.result.set("This is incorrect.")
-            
+            self.result.set("This is incorrect.")           
 
     def mainloop(self):
         self.win.mainloop()
