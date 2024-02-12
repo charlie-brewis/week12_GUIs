@@ -110,12 +110,13 @@ class Truth_table_2d:
         entry_condition_4 = Entry(self.mainframe, textvariable=self.condition4_ans)
         entry_condition_4.grid(row=2, column=2)
 
-
         btn_enter = Button(self.win, text="Enter", command=self.enter_answers)
         btn_enter.pack()
 
         lbl_result = Label(self.win, textvariable=self.result)
         lbl_result.pack()
+
+        return [entry_condition_1, entry_condition_2, entry_condition_3, entry_condition_4]
 
     def enter_answers(self):
         conditions = [
@@ -124,9 +125,12 @@ class Truth_table_2d:
             self.condition3_ans.get() is False,
             self.condition4_ans.get() is True
         ]
-        for condition, i in enumerate(conditions):
+        for i, condition in enumerate(conditions):
+            curr_entry = self.entries[i]
             if condition:
-                self.
+                curr_entry.config(fg="green")
+            else:
+                curr_entry.config(fg="red")
 
         if all(conditions):
             self.result.set("Congratulations! You got it right!")
