@@ -82,6 +82,8 @@ class Truth_table_2d:
         self.condition3_ans = BooleanVar()
         self.condition4_ans = BooleanVar()
 
+        self.score = 0
+        self.percentage = StringVar()
 
         self.entries = self.initialise_widgets()
 
@@ -113,9 +115,13 @@ class Truth_table_2d:
         lbl_result = Label(self.win, textvariable=self.result)
         lbl_result.pack()
 
+        lbl_percentage = Label(self.win, textvariable=self.percentage)
+        lbl_percentage.pack()
+
         return [entry_condition_1, entry_condition_2, entry_condition_3, entry_condition_4]
 
     def enter_answers(self):
+        self.score = 0
         conditions = [
             self.condition1_ans.get() is False,
             self.condition2_ans.get() is False,
@@ -126,13 +132,16 @@ class Truth_table_2d:
             curr_entry = self.entries[i]
             if condition:
                 curr_entry.config(fg="green")
+                self.score += 1
             else:
                 curr_entry.config(fg="red")
 
         if all(conditions):
             self.result.set("Congratulations! You got it right!")
         else:
-            self.result.set("This is incorrect.")           
+            self.result.set("This is incorrect.")
+
+        self.percentage.set(f"Score: {self.score} / 4 ({self.score / 4: .2f} %)")           
 
     def mainloop(self):
         self.win.mainloop()
