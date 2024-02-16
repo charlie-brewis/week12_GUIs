@@ -1,4 +1,5 @@
 import tkinter as tk
+import csv
 
 
 class Sign_up_form:
@@ -13,8 +14,6 @@ class Sign_up_form:
         self.password_requirements = password_requirements
 
         self.fields = self.initialise_widgets()
-
-
 
     def initialise_widgets(self) -> None:
         lbl_error = tk.Label(self.win, textvariable=self.error_msg)
@@ -36,7 +35,7 @@ class Sign_up_form:
         )
         checkbox_show_password.pack(padx=5, pady=5)
 
-        btn_sign_up = tk.Button(self.win, text="Sign Up", command=self.sign_up)
+        btn_sign_up = tk.Button(self.win, text="Sign Up", command=self.handle_sign_up)
         btn_sign_up.pack(padx=5, pady=5, side="left")
 
         btn_cancel = tk.Button(self.win, text="Cancel", command=self.win.quit)
@@ -51,8 +50,20 @@ class Sign_up_form:
         password_field.toggle_showing()
         confirm_password_field.toggle_showing()
 
-    def sign_up(self) -> None:
+    def handle_sign_up(self) -> None:
         username, password, confirm_password = [field.get_value() for field in self.fields]
+        if self.validate_details(username, password, confirm_password):
+            self.sign_up_or_login(username, password)
+
+    def sign_up_or_login(self, username: str, password: str) -> None:
+        login_details = LoginDetails(username, password)
+        if login_details.check_already_exists():
+            self.error_msg.set("Login Successful!")
+        else:
+            login_details.write_to_file()
+            self.error_msg.set("Sign up successful")
+    
+    def validate_details(self, username: str, password: str, confirm_password: str) -> bool:
         errors_queue = PriorityQueue()
         if not username:
             errors_queue.insert("Username cannot be empty", 1)
@@ -62,14 +73,8 @@ class Sign_up_form:
             requirement_function, error_message, priority = data
             if not requirement_function(password):
                 errors_queue.insert(error_message, priority)
-        # Color message
-        if errors_queue.queue:
-            error_message = errors_queue.pop()
-            self.error_msg.set(error_message)
-            self.error_msg.config(fg="red")
-        else:
-            self.error_msg.set("Sign up successful")
-            self.error_msg.config(fg="green")
+        return not errors_queue.queue
+    
 
     def mainloop(self) -> None:
         self.win.mainloop()
@@ -109,6 +114,35 @@ class Field:
     def toggle_showing(self) -> None:
         self.showing.set(not self.showing.get())
         self.refresh_entry_text()
+
+
+class LoginDetails:
+
+    def __init__(self, username: str, password: str) -> None:
+        self.username = username
+        self.password = password
+    
+    def write_to_file(self) -> None:
+        with open("login_details.csv", "a", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow([self.username, self.password])
+    
+    def check_already_exists(self) -> bool:
+        if not self.check_file_exists():
+            return False
+        with open("login_details.csv", "r") as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if row[0] == self.username and row[1] == self.password:
+                    return True
+        return False
+    
+    def check_file_exists(self) -> bool:
+        try:
+            with open("login_details.csv", "r") as file:
+                return True
+        except FileNotFoundError:
+            return False
 
 
 class PriorityQueue:
